@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Advanced Calculator</title>
+    <link rel="icon" href="assets/img/calculator.jpeg">
+
+
+    <!-- Tailwind CSS CDN for styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+</head>
+
+<body>
+    <div class="sidebar">
+        <button id="basic-toggle">Basic Calculator</button>
+        <button id="scientific-toggle">Scientific Calculator</button>
+        <button id="graphical-toggle">Graphical Calculator</button>
+        <button id="solveProblemBtn">Solve Problem</button>
+    </div>
+    <div class="main-layout" style="display: flex; flex-direction: row; gap: 1rem;">
+        <div class="calculator-container" style="flex: 1; display: flex; flex-direction: column;">
+            <div class="top-bar">
+                <div class="top-buttons">
+                    <button id="theme-toggle">🌙</button>
+                    <button id="history-toggle">📜</button>
+                    <button id="voice-input">🎙️</button>
+                </div>
+                <input type="text" class="calculator-screen" id="calculator-screen" aria-label="Calculator screen" />
+            </div>
+
+            <div class="scientific-buttons action-buttons hidden">
+                <button id="matrixBtn">Matrix/Vector</button>
+                <button id="equationBtn">Equation</button>
+                <button id="baseBtn">Base-N</button>
+                <button id="statsBtn">Statistics</button>
+            </div>
+            <div class="graphical-buttons action-buttons hidden">
+                <button id="plotBtn">Plot f(x)</button>
+                <button id="plotDerivativeBtn">Plot Derivative</button>
+                <button id="exportBtn">Export PNG</button>
+                <button id="pdfBtn">Export PDF</button>
+            </div>
+
+            <div class="calculator">
+                <div class="calculator-keys basic-keys hidden">
+                    <button class="key function" data-action="clear">C</button>
+                    <button class="key function" data-action="backspace">⌫</button>
+                    <button class="key function" data-action="toggle-sign">±</button>
+                    <button class="key operator" data-action="divide">÷</button>
+
+                    <button class="key number" data-action="7">7</button>
+                    <button class="key number" data-action="8">8</button>
+                    <button class="key number" data-action="9">9</button>
+                    <button class="key operator" data-action="multiply">×</button>
+
+                    <button class="key number" data-action="4">4</button>
+                    <button class="key number" data-action="5">5</button>
+                    <button class="key number" data-action="6">6</button>
+                    <button class="key operator" data-action="subtract">−</button>
+
+                    <button class="key number" data-action="1">1</button>
+                    <button class="key number" data-action="2">2</button>
+                    <button class="key number" data-action="3">3</button>
+                    <button class="key operator" data-action="add">+</button>
+
+                    <button class="key function" data-action="open-paren">(</button>
+                    <button class="key number" data-action="0">0</button>
+                    <button class="key function" data-action="close-paren">)</button>
+                    <button class="key operator" data-action="modulus">%</button>
+                    <button class="key function" data-action="sqrt">√</button>
+                    <button class="key function" data-action="decimal">.</button>
+                    <button class="key function" data-action="ans">ans</button>
+                    <button class="key function" data-action="equals">=</button>
+                </div>
+
+                <!-- ...existing code... -->
+            <div class="calculator-keys scientific-keys">
+                <button class="key function" data-action="factorial">!</button>
+                <button class="key function" data-action="pi">π</button>
+                <button class="key function" data-action="sin">sin</button>
+                <button class="key function" data-action="cos">cos</button>
+                <button class="key function" data-action="tan">tan</button>
+                <button class="key function" data-action="log">log</button>
+                <button class="key function" data-action="ln">ln</button>
+                <button class="key function" data-action="exp">exp</button>
+
+                <button class="key function" data-action="pow">xʸ</button>
+                <button class="key function" data-action="square">a²</button>
+                <button class="key function" data-action="npr">nPr</button>
+                <button class="key function" data-action="ncr">nCr</button>
+            </div>
+        </div>
+        <div class="right-panel">
+            <canvas id="graph-canvas" height="300" class="hidden"></canvas>
+            <div id="latex-output" class="hidden"></div>
+            <div id="history-panel" class="hidden">
+                <h3>Calculation History</h3>
+                <ul id="history-list"></ul>
+                <button onclick="clearHistory()"
+                    class="mt-4 w-full bg-red-500 hover:bg-red-600 text-white font-semibold py-2 px-4 rounded-lg shadow">Clear
+                    History</button>
+            </div>
+        </div>
+
+    </div>
+            <!-- ...existing code... -->
+
+
+
+        <!-- Custom Alert Modal -->
+        <div class="modal hidden" id="customAlertModal">
+            <div class="modal-content">
+                <h2>Message</h2>
+                <div id="customAlertMessage"></div>
+                <button id="closeCustomAlertModal">OK</button>
+            </div>
+        </div>
+
+        <!-- Function Plot Modal -->
+        <div class="modal hidden" id="plotModal">
+            <div class="modal-content">
+                <h2>Plot Function</h2>
+                <input id="functionInput" placeholder="Enter function in terms of x (e.g., sin(x) + x^2)"
+                    aria-label="Enter function to plot" />
+                <button id="plotFunctionBtn">Plot f(x)</button>
+                <button id="plotFunctionAndDerivativeBtn">Plot f(x) and f'(x)</button>
+                <button id="closePlotModal">Close</button>
+                <div id="functionDisplay" class="hidden"></div>
+                <div id="derivativeOutput" class="hidden"></div>
+            </div>
+        </div>
+
+
+        <!-- Solve Problem Modal -->
+        <div class="modal hidden" id="solveProblemModal">
+            <div class="modal-content">
+                <h2>Solve Word Problem</h2>
+                <textarea id="problem-input" placeholder="Enter your word problem here..."
+                    aria-label="Enter word problem to solve"></textarea>
+                <button id="solveProblemBtnModal">Solve Problem</button>
+                <div id="problem-result"></div>
+                <button id="closeSolveProblemModal">Close</button>
+            </div>
+        </div>
+
+        <div class="modal hidden" id="mcatrixModal">
+            <div class="modal-content">
+                <h2>Matrix & Vector</h2>
+                <label for="matrixInputA" class="text-white">Matrix A:</label>
+                <textarea id="matrixInputA" placeholder="Enter Matrix A or Vector A (e.g., [[1,2],[3,4]] or [1,2,3])"
+                    aria-label="Enter Matrix A or Vector A"></textarea>
+                <label for="matrixInputB" class="text-white">Matrix B:</label>
+                <textarea id="matrixInputB" placeholder="Enter Matrix B or Vector B (optional)"
+                    aria-label="Enter Matrix B or Vector B"></textarea>
+                <select id="matrixOperation" aria-label="Select matrix operation">
+                    <option value="add">Add</option>
+                    <option value="subtract">Subtract</option>
+                    <option value="multiply">Multiply</option>
+                    <option value="inverse">Inverse (Matrix A only)</option>
+                    <option value="transpose">Transpose (Matrix A only)</option>
+                    <option value="determinant">Determinant (Matrix A only)</option>
+                    <option value="dot">Dot Product (Vectors A & B)</option>
+                    <option value="cross">Cross Product (Vectors A & B, 3D only)</option>
+                    <option value="magnitude">Magnitude (Vector A only)</option>
+                </select>
+                <button id="matrixCalculate">Calculate</button>
+                <div id="matrixResult"></div>
+                <button id="closeMatrixModal">Close</button>
+            </div>
+        </div>
+
+        <!-- Equation Modal -->
+        <div class="modal hidden" id="equationModal">
+            <div class="modal-content">
+                <h2>Equation </h2>
+                <input id="equationInput" placeholder="Enter equation (e.g., 2x + 3 = 7)" aria-label="Equation" />
+                <button id="solveEquation">Solve</button>
+                <div id="equationResult"></div>
+                <button id="closeEquationModal">Close</button>
+            </div>
+        </div>
+
+        <!-- Base Modal -->
+        <div class="modal hidden" id="baseModal">
+            <div class="modal-content">
+                <h2>Base-N Converter</h2>
+                <input id="baseInput" placeholder="Enter number" aria-label="Number" />
+                <select id="fromBase" aria-label="From base">
+                    <option value="10">Decimal</option>
+                    <option value="2">Binary</option>
+                    <option value="8">Octal</option>
+                    <option value="16">Hexadecimal</option>
+                </select>
+                <select id="toBase" aria-label="To base">
+                    <option value="10">Decimal</option>
+                    <option value="2">Binary</option>
+                    <option value="8">Octal</option>
+                    <option value="16">Hexadecimal</option>
+                </select>
+                <button id="convertBase">Convert</button>
+                <div id="baseResult"></div>
+                <button id="closeBaseModal">Close</button>
+            </div>
+        </div>
+
+        <div class="modal hidden" id="statsModal">
+            <div class="modal-content">
+                <h2>Statistics</h2>
+                <textarea id="statsInput" placeholder="Enter numbers separated by spaces (e.g., 1 5 2 8 3)"
+                    aria-label="Enter numbers for statistics"></textarea>
+                <button id="calculateStats">Calculate</button>
+                <div id="statsResult"></div>
+                <button id="closeStatsModal">Close</button>
+            </div>
+        </div>
+
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/12.4.0/math.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+        <script type="text/javascript" id="MathJax-script" async
+            src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+        <link rel="stylesheet" href="calculator.css" />
+        <script src="calculator.js"></script>
+
+</body>
+
+</html>

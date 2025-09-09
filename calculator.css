@@ -1,0 +1,513 @@
+/* Upgraded styles for the calculator with modern look and improved accessibility */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: #121212;
+    color: #e0e0e0;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    height: 100vh;
+    overflow: auto;
+    padding: 10px;
+    gap: 15px;
+    -webkit-user-select: none;
+    user-select: none;
+}
+
+body.light {
+    background-color: #f9fafb;
+    color: #1f2937;
+}
+
+.sidebar {
+    width: 300px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 15px;
+    background-color: #1e293b;
+    color: #fbbf24; /* Tailwind amber-400 */
+    border-radius: 1.25rem;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.5);
+    margin-top: 200px;
+    margin-left: 15px;
+    -webkit-user-select: none;
+    user-select: none;
+}
+
+.sidebar button {
+    padding: 12px;
+    background-color: #334155;
+    color: #fbbf24;
+    border: none;
+    border-radius: 0.75rem;
+    cursor: pointer;
+    font-weight: 700;
+    font-size: 1rem;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.3);
+    -webkit-user-select: none;
+    user-select: none;
+}
+
+.sidebar button.active,
+.sidebar button:hover {
+    background-color: #22c55e; /* Tailwind green-500 */
+    color: #ffffff;
+    box-shadow: 0 6px 15px rgba(34, 197, 94, 0.7);
+}
+
+body.light .sidebar {
+    background-color: #e0e7ff;
+    color: #1f2937;
+}
+
+body.light .sidebar button {
+    background-color: #c7d2fe;
+    color: #78350f;
+}
+
+body.light .sidebar button.active,
+body.light .sidebar button:hover {
+    background-color: #4ade80; /* green-400 */
+    color: #1f2937;
+    box-shadow: 0 6px 15px rgba(74, 222, 128, 0.7);
+}
+
+#solveProblemBtn {
+    margin-top: 15px;
+    padding: 10px 16px;
+    background-color: #22c55e;
+    color: white;
+    font-weight: 700;
+    border: none;
+    border-radius: 0.75rem;
+    cursor: pointer;
+    text-align: center;
+    -webkit-user-select: none;
+    user-select: none;
+    box-shadow: 0 4px 12px rgba(34, 197, 94, 0.6);
+    transition: background-color 0.3s ease;
+}
+
+#solveProblemBtn:hover {
+    background-color: #16a34a;
+}
+
+.calculator-container {
+    background-color: #1e293b;
+    color: #e0e0e0;
+    border-radius: 1.5rem;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.7);
+    max-width: 380px;
+    flex: 1;
+    padding: 0.3rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    margin-top: 5px;
+    margin-left: 0;
+    max-height: 100vh;
+    overflow-y: auto;
+    -webkit-user-select: none;
+    user-select: none;
+}
+
+.calculator-keys {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0.3rem;
+}
+
+.calculator-keys .key {
+    padding: 0.6rem;
+    border-radius: 1rem;
+    font-size: 0.85rem;
+    font-weight: 700;
+    background-color: #334155;
+    color: #e0e0e0;
+    transition: background-color 0.3s ease, transform 0.15s ease;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    -webkit-user-select: none;
+    user-select: none;
+}
+
+
+body.light .calculator-container {
+    background-color: #f3f4f6;
+    color: #1f2937;
+}
+
+.top-bar {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+}
+
+.top-buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.75rem;
+}
+
+.top-buttons button,
+.action-buttons button {
+    padding: 0.5rem 0.75rem;
+    border-radius: 1rem;
+    background-color: #334155;
+    color: #e0e0e0;
+    font-weight: 700;
+    font-size: 1rem;
+    transition: background-color 0.3s ease, transform 0.15s ease;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
+    -webkit-user-select: none;
+    user-select: none;
+}
+
+body.light .top-buttons button,
+body.light .action-buttons button {
+    background-color: #cbd5e1;
+    color: #1f2937;
+}
+
+.top-buttons button:hover,
+.action-buttons button:hover {
+    background-color: #475569;
+    transform: translateY(-2px);
+}
+
+body.light .top-buttons button:hover,
+body.light .action-buttons button:hover {
+    background-color: #94a3b8;
+}
+
+.calculator-screen {
+    width: 100%;
+    padding: 1.25rem;
+    background-color: #2563eb; /* Tailwind blue-600 */
+    border: none;
+    border-radius: 1rem;
+    font-size: 1.5rem;
+    text-align: right;
+    color: #ffffff;
+    margin-bottom: 0.5rem;
+    box-shadow: inset 0 3px 8px rgba(0, 0, 0, 0.5);
+    caret-color: #ffffff;
+    -webkit-user-select: text;
+    user-select: text;
+}
+
+body.light .calculator-screen {
+    background-color: #dbeafe;
+    color: #1f2937;
+}
+
+body.light .calculator-keys .key {
+    background-color: #e0e7ff;
+    color: #1f2937;
+}
+
+.calculator-keys .key:hover {
+    background-color: #475569;
+    transform: translateY(-3px);
+}
+
+body.light .calculator-keys .key:hover {
+    background-color: #a5b4fc;
+}
+
+.calculator-keys .operator {
+    background-color: #ef4444;
+    color: #ffffff;
+}
+
+.calculator-keys .operator:hover {
+    background-color: #dc2626;
+}
+
+body.light .calculator-keys .operator:hover {
+    background-color: #b91c1c;
+}
+
+.calculator-keys .function {
+    background-color: #6b7280;
+    color: #e0e0e0;
+}
+
+body.light .calculator-keys .function {
+    background-color: #9ca3af;
+}
+
+.calculator-keys .function:hover {
+    background-color: #475569;
+}
+
+body.light .calculator-keys .function:hover {
+    background-color: #6b7280;
+}
+
+.calculator-keys .key[data-action="equals"] {
+    background-color: #22c55e;
+    color: #ffffff;
+    grid-column: span 1;
+}
+
+body.light .calculator-keys .key[data-action="equals"]:hover {
+    background-color: #16a34a;
+}
+
+.action-buttons {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+}
+
+.action-buttons button {
+    width: 100%;
+    justify-content: center;
+}
+
+#graph-canvas {
+    background-color: #ffffff;
+    border-radius: 1rem;
+    margin-top: 1.25rem;
+    height: 400px;
+    max-width: 600px;
+    min-width: 300px;
+    width: 100%;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    overflow: auto;
+}
+
+#latex-output, #derivativeOutput, #functionDisplay {
+    background-color: #334155;
+    color: #e0e0e0;
+    padding: 1rem;
+    border-radius: 1rem;
+    margin-top: 1.rem;
+    text-align: center;
+    font-size: 1.25rem;
+    overflow-x: auto;
+    max-width: 100%;
+    white-space: nowrap;
+    word-wrap: normal;
+    word-break: normal;
+    display: block;
+}
+
+body.light #latex-output, body.light #derivativeOutput {
+    background-color: #e0e7ff;
+    color: #1f2937;
+}
+
+#history-panel {
+    background-color: #334155;
+    color: #e0e0e0;
+    padding: 1.25rem;
+    border-radius: 1rem;
+    margin-top: 1.25rem;
+    max-height: 220px;
+    overflow-y: auto;
+    box-shadow: inset 0 3px 8px rgba(0, 0, 0, 0.5);
+}
+
+body.light #history-panel {
+    background-color: #e0e7ff;
+    color: #1f2937;
+}
+
+#history-panel h3 {
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    text-align: center;
+}
+
+#history-list li {
+    padding: 0.6rem 0;
+    border-bottom: 1px solid #475569;
+    font-size: 1rem;
+}
+
+body.light #history-list li {
+    border-color: #a5b4fc;
+}
+
+#history-list li:last-child {
+    border-bottom: none;
+}
+
+.hidden {
+    display: none !important;
+}
+
+/* Modal Styles */
+.modal {
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(18, 18, 18, 0.85);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    background-color: #1e293b;
+    color: #e0e0e0;
+    margin: auto;
+    padding: 2rem;
+    border-radius: 1.25rem;
+    width: 90%;
+    max-width: 520px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.7);
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+}
+
+body.light .modal-content {
+    background-color: #f3f4f6;
+    color: #1f2937;
+}
+
+.modal-content h2 {
+    font-size: 1.75rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    text-align: center;
+}
+
+.modal-content textarea,
+.modal-content input,
+.modal-content select {
+    width: 100%;
+    padding: 1rem;
+    border-radius: 0.75rem;
+    border: 1px solid #475569;
+    background-color: #334155;
+    color: #e0e0e0;
+    font-size: 1.125rem;
+}
+
+body.light .modal-content textarea,
+body.light .modal-content input,
+body.light .modal-content select {
+    border-color: #a5b4fc;
+    background-color: #e0e7ff;
+    color: #1f2937;
+}
+
+.right-panel {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 3rem;
+    overflow-y: auto;
+    max-height: 100vh;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    body {
+        padding: 10px;
+        gap: 15px;
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .sidebar {
+        width: 100%;
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 8px;
+        padding: 10px;
+        margin-top: 0;
+        margin-left: 0;
+        justify-content: center;
+        order: 1;
+    }
+
+    .sidebar button {
+        flex: 1 1 45%;
+        padding: 10px;
+        font-size: 1rem;
+        min-width: 120px;
+    }
+
+    .main-layout {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+        align-items: stretch;
+        width: 100%;
+        max-width: 100%;
+        margin: 0 auto;
+        order: 2;
+    }
+
+    .calculator-container {
+        flex: 1 1 auto;
+        max-width: 100%;
+        min-width: auto;
+        margin-top: 0;
+        margin-left: 0;
+        padding: 0.5rem;
+        border-radius: 1rem;
+        max-height: none;
+        overflow-y: visible;
+        order: 1;
+    }
+
+    .right-panel {
+        flex: 1 1 auto;
+        min-width: auto;
+        max-width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 1rem;
+        background: none;
+        box-shadow: none;
+        padding: 0;
+        max-height: none;
+        overflow: visible;
+        order: 2;
+    }
+
+    #graph-canvas {
+        width: 100%;
+        max-width: 100%;
+        height: 300px;
+        min-width: auto;
+        margin-top: 0.75rem;
+        box-shadow: none;
+    }
+
+    .calculator-keys .key {
+        padding: 0.8rem;
+        font-size: 1rem;
+    }
+
+    .calculator-screen {
+        font-size: 1.25rem;
+        padding: 1rem;
+    }
+
+    #history-panel {
+        max-height: 150px;
+    }
+}
