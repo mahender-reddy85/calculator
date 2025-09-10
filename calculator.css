@@ -596,7 +596,7 @@ body.light .modal-content button[id*="Close"]:hover {
         flex-wrap: wrap;
         gap: 8px;
         padding: 10px;
-        margin-top: 50px;
+        margin-top: 100px;
         margin-left: 0;
         order: 1;
         max-height: none;
