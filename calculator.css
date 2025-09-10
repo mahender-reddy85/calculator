@@ -277,15 +277,19 @@ body.light .calculator-keys .key[data-action="equals"]:hover {
 }
 
 #graph-canvas {
-    background-color: #ffffff;
     border-radius: 1rem;
     margin-top: 1.25rem;
-    height: 400px;
+    max-height: 600px;
+    min-height: 400px;
     max-width: 600px;
-    min-width: 300px;
+    min-width: 400px;
     width: 100%;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
     overflow: auto;
+    position: absolute;
+    right: 350px;
+    top: 100px;
+    z-index: 10;
 }
 
 .graphical-buttons button {
@@ -530,32 +534,55 @@ body.light .modal-content button[id*="Close"]:hover {
 }
 
 /* Responsive adjustments */
+
+/* Tablet and larger mobile */
+@media (max-width: 1024px) {
+    .sidebar {
+        width: 250px;
+        margin-top: 100px;
+    }
+
+    .calculator-container {
+        max-width: 350px;
+    }
+
+    #graph-canvas {
+        height: 500px;
+        max-width: 500px;
+        right: 300px;
+    }
+}
+
+/* Mobile landscape and smaller tablets */
 @media (max-width: 768px) {
     body {
-        padding: 10px;
-        gap: 15px;
+        padding: 1vw;
+        gap: 2vw;
         flex-direction: column;
         align-items: stretch;
+        height: auto;
+        min-height: 100vh;
     }
 
     .sidebar {
         width: 100%;
-        flex-direction: row;
-        flex-wrap: wrap;
-        gap: 8px;
-        padding: 10px;
+        flex-direction: column; /* Vertical stack for better usability */
+        gap: 10px;
+        padding: 15px;
         margin-top: 0;
         margin-left: 0;
-        justify-content: center;
         order: 1;
+        max-height: 200px;
+        overflow-y: auto;
     }
 
     .sidebar button {
-        flex: 1 1 45%;
-        padding: 12px;
-        font-size: 1rem;
-        min-width: 120px;
-        min-height: 44px; /* Ensure touch-friendly size */
+        flex: 1 1 auto;
+        padding: 15px;
+        font-size: 1.1rem;
+        min-width: auto;
+        min-height: 50px; /* Touch-friendly */
+        width: 100%;
     }
 
     .main-layout {
@@ -571,10 +598,10 @@ body.light .modal-content button[id*="Close"]:hover {
 
     .calculator-container {
         flex: 1 1 auto;
-        max-width: 250px;
+        max-width: 100%;
         margin-top: 0;
         margin-left: 0;
-        padding: 0.5rem;
+        padding: 1rem;
         border-radius: 1rem;
         max-height: none;
         overflow-y: visible;
@@ -584,7 +611,7 @@ body.light .modal-content button[id*="Close"]:hover {
     .right-panel {
         flex: 1 1 auto;
         min-width: auto;
-        max-width: 250px;
+        max-width: 100%;
         display: flex;
         flex-direction: column;
         align-items: stretch;
@@ -600,10 +627,14 @@ body.light .modal-content button[id*="Close"]:hover {
     #graph-canvas {
         width: 100%;
         max-width: 100%;
-        height: 400px;
+        height: 300px;
         min-width: auto;
-        margin-top: 0.75rem;
+        margin-top: 1rem;
         box-shadow: none;
+        position: relative;
+        right: auto;
+        top: auto;
+        order: 1;
     }
 
     .graphical-buttons {
@@ -618,54 +649,15 @@ body.light .modal-content button[id*="Close"]:hover {
     .graphical-buttons button {
         width: 100%;
         margin-bottom: 0;
-    }
-
-    .calculator-keys .key {
-        padding: 1rem;
-        font-size: 1.1rem;
-        min-height: 50px; /* Larger touch targets */
-    }
-
-    .calculator-screen {
-        font-size: 1.25rem;
-        padding: 1rem;
-        min-height: 60px;
-    }
-
-    #history-panel {
-        max-height: 150px;
-    }
-
-    .modal-content {
-        width: 95%;
-        padding: 1.5rem;
-    }
-
-    .modal-content textarea,
-    .modal-content input,
-    .modal-content select {
+        padding: 12px;
         font-size: 1rem;
-        padding: 0.8rem;
-    }
-
-    .modal-content button {
-        padding: 0.8rem 1.2rem;
-        font-size: 1rem;
-        min-height: 44px;
-    }
-}
-
-/* Additional responsive for very small screens */
-@media (max-width: 480px) {
-    .calculator-keys {
-        grid-template-columns: repeat(3, 1fr); /* 3 columns for very small screens */
-        gap: 0.4rem;
+        min-height: 48px;
     }
 
     .calculator-keys .key {
         padding: 1.2rem;
         font-size: 1.2rem;
-        min-height: 55px;
+        min-height: 60px; /* Larger touch targets */
     }
 
     .calculator-screen {
@@ -674,23 +666,106 @@ body.light .modal-content button[id*="Close"]:hover {
         min-height: 70px;
     }
 
-    .sidebar button {
-        flex: 1 1 100%;
-        padding: 14px;
+    #history-panel {
+        max-height: 200px;
+    }
+
+    .modal-content {
+        width: 95%;
+        padding: 2rem;
+        max-height: 80vh;
+        overflow-y: auto;
+    }
+
+    .modal-content textarea,
+    .modal-content input,
+    .modal-content select {
         font-size: 1.1rem;
-        min-height: 50px;
+        padding: 1rem;
+        min-height: 48px;
+    }
+
+    .modal-content button {
+        padding: 1rem 1.5rem;
+        font-size: 1.1rem;
+        min-height: 48px;
+    }
+}
+
+/* Small mobile screens */
+@media (max-width: 480px) {
+    body {
+        padding: 2vw;
+        gap: 3vw;
+    }
+
+    .sidebar {
+        padding: 10px;
+        gap: 8px;
+        max-height: 150px;
+    }
+
+    .sidebar button {
+        padding: 12px;
+        font-size: 1rem;
+        min-height: 45px;
+    }
+
+    .calculator-container {
+        padding: 0.5rem;
+    }
+
+    .calculator-keys {
+        grid-template-columns: repeat(4, 1fr); /* Keep 4 columns but larger */
+        gap: 0.5rem;
+    }
+
+    .calculator-keys .key {
+        padding: 1.5rem;
+        font-size: 1.4rem;
+        min-height: 65px;
+    }
+
+    .calculator-screen {
+        font-size: 1.8rem;
+        padding: 1.5rem;
+        min-height: 80px;
     }
 
     #graph-canvas {
         height: 250px;
     }
 
+    .graphical-buttons button {
+        padding: 15px;
+        font-size: 1.1rem;
+        min-height: 50px;
+    }
+
     .modal-content {
         width: 98%;
-        padding: 1rem;
+        padding: 1.5rem;
     }
 
     .modal-content h2 {
-        font-size: 1.5rem;
+        font-size: 1.6rem;
+    }
+
+    .modal-content textarea,
+    .modal-content input,
+    .modal-content select {
+        font-size: 1rem;
+        padding: 0.8rem;
+        min-height: 45px;
+    }
+
+    .modal-content button {
+        padding: 0.9rem 1.2rem;
+        font-size: 1rem;
+        min-height: 45px;
+    }
+
+    #history-panel {
+        max-height: 150px;
     }
 }
