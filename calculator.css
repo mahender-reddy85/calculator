@@ -571,8 +571,7 @@ body.light .modal-content button[id*="Close"]:hover {
 
     .calculator-container {
         flex: 1 1 auto;
-        max-width: 100%;
-        min-width: auto;
+        width: 100px;
         margin-top: 0;
         margin-left: 0;
         padding: 0.5rem;
@@ -605,6 +604,20 @@ body.light .modal-content button[id*="Close"]:hover {
         min-width: auto;
         margin-top: 0.75rem;
         box-shadow: none;
+    }
+
+    .graphical-buttons {
+        margin-top: 0 !important;
+        margin-left: 0 !important;
+        width: 100% !important;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .graphical-buttons button {
+        width: 100%;
+        margin-bottom: 0;
     }
 
     .calculator-keys .key {
