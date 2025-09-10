@@ -279,6 +279,7 @@ body.light .calculator-keys .key[data-action="equals"]:hover {
 #graph-canvas {
     border-radius: 1rem;
     margin-top: 1.25rem;
+    margin-left: 100px;
     max-height: 600px;
     min-height: 400px;
     max-width: 600px;
