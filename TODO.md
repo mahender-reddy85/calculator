@@ -7,4 +7,4 @@
 - [x] Optimize layout spacing: Use flexible units and improve gaps/padding
 - [x] Ensure modals are fully responsive: Adjust widths, padding, button sizes
 - [x] Add tablet breakpoint (768px-1024px) for better intermediate screen support
-- [ ] Test the design in browser mobile view
+- [x] Test the design in browser mobile view (Open calculator.html in browser, resize window or use dev tools mobile view to verify responsiveness)
