@@ -5,7 +5,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Advanced Calculator</title>
-    <link rel="icon" href="assets/img/calculator.jpeg">
+    <!-- <link rel="icon" href="assets/img/calculator.jpeg"> -->
 
 
     <!-- Tailwind CSS CDN for styling -->
@@ -20,6 +20,7 @@
         <button id="graphical-toggle">Graphical Calculator</button>
         <button id="solveProblemBtn">Solve Problem</button>
     </div>
+
     <div class="main-layout" style="display: flex; flex-direction: row; gap: 1rem;">
         <div class="calculator-container" style="flex: 1; display: flex; flex-direction: column;">
             <div class="top-bar">
@@ -37,11 +38,11 @@
                 <button id="baseBtn">Base-N</button>
                 <button id="statsBtn">Statistics</button>
             </div>
-            <div class="graphical-buttons action-buttons hidden">
-                <button id="plotBtn">Plot f(x)</button>
-                <button id="plotDerivativeBtn">Plot Derivative</button>
-                <button id="exportBtn">Export PNG</button>
-                <button id="pdfBtn">Export PDF</button>
+            <div class="graphical-buttons action-buttons hidden" style="margin-top: 80px; margin-left: 100px; width: 250px">
+                <button id="plotBtn">Plot f(x)</button><br>
+                <button id="plotDerivativeBtn">Plot Derivative</button><br>
+                <button id="exportBtn">Export PNG</button><br>
+                <button id="pdfBtn">Export PDF</button><br>
             </div>
 
             <div class="calculator">
@@ -76,21 +77,21 @@
                     <button class="key function" data-action="equals">=</button>
                 </div>
 
-                <!-- ...existing code... -->
-            <div class="calculator-keys scientific-keys">
-                <button class="key function" data-action="factorial">!</button>
-                <button class="key function" data-action="pi">π</button>
-                <button class="key function" data-action="sin">sin</button>
-                <button class="key function" data-action="cos">cos</button>
-                <button class="key function" data-action="tan">tan</button>
-                <button class="key function" data-action="log">log</button>
-                <button class="key function" data-action="ln">ln</button>
-                <button class="key function" data-action="exp">exp</button>
+                <div class="calculator-keys scientific-keys hidden">
+                    <button class="key function" data-action="factorial">!</button>
+                    <button class="key function" data-action="pi">π</button>
+                    <button class="key function" data-action="sin">sin</button>
+                    <button class="key function" data-action="cos">cos</button>
+                    <button class="key function" data-action="tan">tan</button>
+                    <button class="key function" data-action="log">log</button>
+                    <button class="key function" data-action="ln">ln</button>
+                    <button class="key function" data-action="exp">exp</button>
 
-                <button class="key function" data-action="pow">xʸ</button>
-                <button class="key function" data-action="square">a²</button>
-                <button class="key function" data-action="npr">nPr</button>
-                <button class="key function" data-action="ncr">nCr</button>
+                    <button class="key function" data-action="pow">xʸ</button>
+                    <button class="key function" data-action="square">a²</button>
+                    <button class="key function" data-action="npr">nPr</button>
+                    <button class="key function" data-action="ncr">nCr</button>
+                </div>
             </div>
         </div>
         <div class="right-panel">
@@ -104,11 +105,7 @@
                     History</button>
             </div>
         </div>
-
     </div>
-            <!-- ...existing code... -->
-
-
 
         <!-- Custom Alert Modal -->
         <div class="modal hidden" id="customAlertModal">
@@ -146,7 +143,7 @@
             </div>
         </div>
 
-        <div class="modal hidden" id="mcatrixModal">
+        <div class="modal hidden" id="matrixModal">
             <div class="modal-content">
                 <h2>Matrix & Vector</h2>
                 <label for="matrixInputA" class="text-white">Matrix A:</label>

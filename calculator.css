@@ -288,6 +288,25 @@ body.light .calculator-keys .key[data-action="equals"]:hover {
     overflow: auto;
 }
 
+.graphical-buttons button {
+    display: block;
+    width: 100%;
+    margin-bottom: 10px; /* Add gap between buttons */
+    padding: 10px;
+    border-radius: 8px;
+    background-color: #3a3f51;
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+.graphical-buttons button:hover {
+    background-color: #4a4f61;
+}
+
+
 #latex-output, #derivativeOutput, #functionDisplay {
     background-color: #334155;
     color: #e0e0e0;
@@ -409,6 +428,96 @@ body.light .modal-content select {
     border-color: #a5b4fc;
     background-color: #e0e7ff;
     color: #1f2937;
+}
+
+.modal-content button {
+    padding: 0.75rem 1.5rem;
+    border-radius: 0.75rem;
+    border: none;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.15s ease;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.3);
+}
+
+.modal-content button:hover {
+    transform: translateY(-2px);
+}
+
+/* Action buttons (Calculate, Solve, Convert, etc.) */
+#matrixCalculate,
+#solveEquation,
+#convertBase,
+#calculateStats,
+#solveProblemBtnModal,
+.modal-content button[id*="Calculate"],
+.modal-content button[id*="Solve"],
+.modal-content button[id*="Convert"],
+.modal-content button[id*="Btn"] {
+    background-color: #22c55e !important; /* Green */
+    color: #ffffff !important;
+}
+
+#matrixCalculate:hover,
+#solveEquation:hover,
+#convertBase:hover,
+#calculateStats:hover,
+#solveProblemBtnModal:hover,
+.modal-content button[id*="Calculate"]:hover,
+.modal-content button[id*="Solve"]:hover,
+.modal-content button[id*="Convert"]:hover,
+.modal-content button[id*="Btn"]:hover {
+    background-color: #16a34a !important; /* Darker green */
+}
+
+/* Close buttons */
+.modal-content button[id*="close"],
+.modal-content button[id*="Close"] {
+    background-color: #ef4444; /* Red */
+    color: #ffffff;
+}
+
+.modal-content button[id*="close"]:hover,
+.modal-content button[id*="Close"]:hover {
+    background-color: #dc2626; /* Darker red */
+}
+
+/* Light mode styles */
+body.light #matrixCalculate,
+body.light #solveEquation,
+body.light #convertBase,
+body.light #calculateStats,
+body.light #solveProblemBtnModal,
+body.light .modal-content button[id*="Calculate"],
+body.light .modal-content button[id*="Solve"],
+body.light .modal-content button[id*="Convert"],
+body.light .modal-content button[id*="Btn"] {
+    background-color: #4ade80 !important; /* Light green */
+    color: #1f2937 !important;
+}
+
+body.light #matrixCalculate:hover,
+body.light #solveEquation:hover,
+body.light #convertBase:hover,
+body.light #calculateStats:hover,
+body.light #solveProblemBtnModal:hover,
+body.light .modal-content button[id*="Calculate"]:hover,
+body.light .modal-content button[id*="Solve"]:hover,
+body.light .modal-content button[id*="Convert"]:hover,
+body.light .modal-content button[id*="Btn"]:hover {
+    background-color: #22c55e !important; /* Darker green */
+}
+
+body.light .modal-content button[id*="close"],
+body.light .modal-content button[id*="Close"] {
+    background-color: #f87171; /* Light red */
+    color: #1f2937;
+}
+
+body.light .modal-content button[id*="close"]:hover,
+body.light .modal-content button[id*="Close"]:hover {
+    background-color: #ef4444; /* Darker red */
 }
 
 .right-panel {

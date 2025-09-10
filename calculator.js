@@ -14,7 +14,9 @@ let lastWasEquals = false;
 let chartInstance = null;
 
 async function callGeminiAPI(payload) {
-    const apiKey = "AIzaSyAdHP06CFqp1GHZFEY2nIg8GxyU3i5B-uU";
+    // TODO: Replace with environment variable or secure key management
+    // const apiKey = process.env.GEMINI_API_KEY || "YOUR_API_KEY_HERE";
+    const apiKey = "AIzaSyAdHP06CFqp1GHZFEY2nIg8GxyU3i5B-uU"; // Replace with actual API key or use environment variable
     const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${apiKey}`;
     const response = await fetch(apiUrl, {
         method: 'POST',
@@ -25,25 +27,10 @@ async function callGeminiAPI(payload) {
     return await response.json();
 }
 
-// Helper function for expression preparation
-function prepareExpression(expr) {
-    return expr
-        .replace(/sin/g, 'sin')
-        .replace(/cos/g, 'cos')
-        .replace(/tan/g, 'tan')
-        .replace(/log/g, 'log10')
-        .replace(/ln/g, 'log')
-        .replace(/exp/g, 'exp')
-        .replace(/pi/g, 'PI')
-        .replace(/e/g, 'E');
-}
-
 // Helper functions
 function safeGetElement(id) {
     return document.getElementById(id);
 }
-
-
 
 // Global function for clearing history, accessible by onclick
 function clearHistory() {
@@ -56,9 +43,6 @@ function clearHistory() {
         console.warn("History list element not found.");
     }
 }
-
-// Matrix and Vector Calculator functions are defined later in the file.
-// Equation Solver functions are defined later in the file.
 
 
 
@@ -230,6 +214,27 @@ window.addEventListener('DOMContentLoaded', () => {
         solveProblemBtnModal.onclick = solveWordProblem;
     } else {
         console.warn("Solve Problem Modal button not found.");
+    }
+
+    // --- EXPRESSION PREPARATION ---
+    function prepareExpression(expr) {
+        let expressionToEvaluate = expr;
+
+        // Replace custom symbols with math.js friendly ones
+        expressionToEvaluate = expressionToEvaluate
+            .replace(/π/g, 'pi')   // Replace pi symbol with 'pi' string for math.js
+            .replace(/√/g, 'sqrt') // Replace square root symbol with 'sqrt' function name
+            .replace(/×/g, '*')    // Replace multiplication symbol
+            .replace(/÷/g, '/')    // Replace division symbol
+            .replace(/−/g, '-')    // Replace Unicode minus with standard hyphen-minus
+            .replace(/%/g, 'mod') // Replace % for modulus with 'mod' for math.js
+            .replace(/(\d+)P\((\d+)\)/g, 'permutations($1,$2)') // Replace nP(k) with permutations(n,k)
+            .replace(/(\d+)C\((\d+)\)/g, 'combinations($1,$2)') // Replace nC(k) with combinations(n,k)
+            .replace(/P\(/g, 'permutations(') // Replace P( with permutations(
+            .replace(/nCr\(/g, 'combinations(') // Replace nCr( with combinations(
+            .replace(/C\(/g, 'combinations('); // Replace C( with combinations(
+
+        return expressionToEvaluate;
     }
 
     // --- MAIN CALCULATOR EXPRESSION EVALUATION ---
@@ -569,33 +574,42 @@ window.addEventListener('DOMContentLoaded', () => {
     const graphCanvas = document.getElementById('graph-canvas');
     const latexOutput = document.getElementById('latex-output');
 
-    function generateFunctionTable(expr, xStart = -10, xEnd = 10, step = 0.1) { // Changed step to 0.1 for smoother curve
+    function generateFunctionTable(expr, xStart = -2 * Math.PI, xEnd = 2 * Math.PI, step = 0.1) { // Use radians, cover -2π to 2π
         const table = [];
         for (let x = xStart; x <= xEnd; x += step) {
             try {
-                // Use math.js for function evaluation with degrees for trig functions
+                // Use standard Math functions with radians
                 const scope = {
                     x: x,
-                    PI: math.pi,
-                    sin: (val) => math.sin(math.unit(val, 'deg')),
-                    cos: (val) => math.cos(math.unit(val, 'deg')),
-                    tan: (val) => math.tan(math.unit(val, 'deg')),
-                    log: math.log10,
-                    ln: math.log,
-                    exp: math.exp
+                    PI: Math.PI,
+                    sin: Math.sin,
+                    cos: Math.cos,
+                    tan: Math.tan,
+                    log: Math.log10,
+                    ln: Math.log,
+                    exp: Math.exp
                 };
                 const y = math.evaluate(expr, scope);
-                if (typeof y === 'number' && !isNaN(y) && Math.abs(y) < 1e10) { // Added check for very large/small numbers
+                if (typeof y === 'number' && !isNaN(y) && Math.abs(y) < 1e10) {
                     table.push({ x: parseFloat(x.toFixed(2)), y: parseFloat(y.toFixed(2)) });
-                } else {
-                    // console.warn(`Skipping invalid or out-of-range y value for x=${x}:`, y);
                 }
             } catch (e) {
-                // console.warn(`Error evaluating f(${x}):`, e.message);
-                // Do not push NaN or errors, let the graph skip these points
+                // Skip invalid points
             }
         }
         return table;
+    }
+
+    function plotAnyFunctionAndDerivative(expr) {
+        const derivExpr = math.derivative(expr, 'x').toString();
+        const parsedExpr = prepareExpression(expr);
+        const parsedDeriv = prepareExpression(derivExpr);
+        const fTable = generateFunctionTable(parsedExpr);
+        const fPrimeTable = generateFunctionTable(parsedDeriv);
+        plotGraph([
+            { label: `f(x) = ${expr}`, color: '#00ffcc', data: fTable },
+            { label: `f'(x) = ${derivExpr}`, color: '#ff6600', data: fPrimeTable }
+        ], `${expr} and ${derivExpr}`);
     }
 
     function plotGraph(datasets, exprLatex) {
@@ -634,13 +648,14 @@ window.addEventListener('DOMContentLoaded', () => {
         // Prepare datasets for Chart.js
         const chartDatasets = datasets.map(ds => ({
             label: ds.label,
-            data: ds.data.map(p => p.y),
+            data: ds.data, // Use {x, y} objects
             borderColor: ds.color,
             borderWidth: 2,
             fill: false,
-            pointRadius: 3,
+            pointRadius: 0,
             pointBackgroundColor: ds.color,
-            pointBorderColor: '#ffffff'
+            pointBorderColor: '#ffffff',
+            parsing: { xAxisKey: 'x', yAxisKey: 'y' } // Tell Chart.js to use x/y keys
         }));
 
         // Use the first dataset's x values for labels (assuming all have same x range)
@@ -691,7 +706,7 @@ window.addEventListener('DOMContentLoaded', () => {
             // Format exprLatex for LaTeX display
             let latexContent = '';
             if (datasets.length === 1) {
-                latexContent = `$$f(x) = ${exprLatex}$$`;
+                latexContent = `f(x) = ${exprLatex}`;
                 // Clear derivative output if any
                 const derivativeOutput = document.getElementById('derivativeOutput');
                 if (derivativeOutput) {
@@ -700,10 +715,10 @@ window.addEventListener('DOMContentLoaded', () => {
                 }
             } else {
                 // For multiple datasets, assume first is function, second is derivative
-                latexContent = `$$f(x) = ${exprLatex.split(' and ')[0]}$$`;
+                latexContent = `f(x) = ${exprLatex.split(' and ')[0]}`;
                 const derivativeOutput = document.getElementById('derivativeOutput');
                 if (derivativeOutput) {
-                    derivativeOutput.innerHTML = `$$f'(x) = ${exprLatex.split(' and ')[1]}$$`;
+                    derivativeOutput.innerHTML = `f'(x) = ${exprLatex.split(' and ')[1]}`;
                     derivativeOutput.classList.remove('hidden');
                 }
             }
@@ -927,22 +942,10 @@ window.addEventListener('DOMContentLoaded', () => {
                 return;
             }
             try {
+                plotAnyFunctionAndDerivative(expr);
                 const derivativeExpr = math.derivative(expr, 'x').toString();
-                // Prepare expressions
-                const parsedExpr = prepareExpression(expr);
-                const parsedDeriv = prepareExpression(derivativeExpr);
-                const tableF = generateFunctionTable(parsedExpr);
-                const tableD = generateFunctionTable(parsedDeriv);
-                if (tableF.length > 0 && tableD.length > 0) {
-                    plotGraph([
-                        { data: tableF, label: 'f(x) = ' + expr, color: '#4285F4' },
-                        { data: tableD, label: 'f\'(x) = ' + derivativeExpr, color: '#FF0000' }
-                    ], expr + ' and ' + derivativeExpr);
-                    addToHistory(`Plotted: f(x) = ${expr} and f'(x) = ${derivativeExpr}`, '');
-                    hideModal("plotModal");
-                } else {
-                    showCustomAlert("Could not generate data for the plot. Check your function or range.");
-                }
+                addToHistory(`Plotted: f(x) = ${expr} and f'(x) = ${derivativeExpr}`, '');
+                hideModal("plotModal");
             } catch (e) {
                 showCustomAlert('Invalid expression for derivative: ' + e.message);
             }
