@@ -631,10 +631,11 @@ body.light .modal-content button[id*="Close"]:hover {
         min-width: auto;
         margin-top: 1rem;
         box-shadow: none;
-        position: relative;
+        position: relative !important;
         right: auto;
         top: auto;
         order: 1;
+        z-index: auto;
     }
 
     .graphical-buttons {
