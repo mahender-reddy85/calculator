@@ -622,8 +622,8 @@ body.light .modal-content button[id*="Close"]:hover {
         margin-left: 0;
         padding: 1rem;
         border-radius: 1rem;
-        max-height: none;
-        overflow-y: visible;
+        max-height: 90vh;
+        overflow-y: auto;
         order: 1;
     }
 
