@@ -552,9 +552,10 @@ body.light .modal-content button[id*="Close"]:hover {
 
     .sidebar button {
         flex: 1 1 45%;
-        padding: 10px;
+        padding: 12px;
         font-size: 1rem;
         min-width: 120px;
+        min-height: 44px; /* Ensure touch-friendly size */
     }
 
     .main-layout {
@@ -607,16 +608,76 @@ body.light .modal-content button[id*="Close"]:hover {
     }
 
     .calculator-keys .key {
-        padding: 0.8rem;
-        font-size: 1rem;
+        padding: 1rem;
+        font-size: 1.1rem;
+        min-height: 50px; /* Larger touch targets */
     }
 
     .calculator-screen {
         font-size: 1.25rem;
         padding: 1rem;
+        min-height: 60px;
     }
 
     #history-panel {
         max-height: 150px;
+    }
+
+    .modal-content {
+        width: 95%;
+        padding: 1.5rem;
+    }
+
+    .modal-content textarea,
+    .modal-content input,
+    .modal-content select {
+        font-size: 1rem;
+        padding: 0.8rem;
+    }
+
+    .modal-content button {
+        padding: 0.8rem 1.2rem;
+        font-size: 1rem;
+        min-height: 44px;
+    }
+}
+
+/* Additional responsive for very small screens */
+@media (max-width: 480px) {
+    .calculator-keys {
+        grid-template-columns: repeat(3, 1fr); /* 3 columns for very small screens */
+        gap: 0.4rem;
+    }
+
+    .calculator-keys .key {
+        padding: 1.2rem;
+        font-size: 1.2rem;
+        min-height: 55px;
+    }
+
+    .calculator-screen {
+        font-size: 1.5rem;
+        padding: 1.2rem;
+        min-height: 70px;
+    }
+
+    .sidebar button {
+        flex: 1 1 100%;
+        padding: 14px;
+        font-size: 1.1rem;
+        min-height: 50px;
+    }
+
+    #graph-canvas {
+        height: 250px;
+    }
+
+    .modal-content {
+        width: 98%;
+        padding: 1rem;
+    }
+
+    .modal-content h2 {
+        font-size: 1.5rem;
     }
 }
