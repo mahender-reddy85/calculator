@@ -809,7 +809,7 @@ body.light .modal-content button[id*="Close"]:hover {
         top: auto;
         left: auto;
         text-align: center;
-        font-size: 2.5rem;
+        font-size: 4.5rem;
         margin-bottom: 10px;
         color: #fbbf24;
         text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
