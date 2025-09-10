@@ -30,7 +30,8 @@ body.light {
     gap: 12px;
     padding: 15px;
     background-color: #1e293b;
-    color: #fbbf24; /* Tailwind amber-400 */
+    color: #fbbf24;
+    /* Tailwind amber-400 */
     border-radius: 1.25rem;
     box-shadow: 0 12px 30px rgba(0, 0, 0, 0.5);
     margin-top: 200px;
@@ -56,7 +57,8 @@ body.light {
 
 .sidebar button.active,
 .sidebar button:hover {
-    background-color: #22c55e; /* Tailwind green-500 */
+    background-color: #22c55e;
+    /* Tailwind green-500 */
     color: #ffffff;
     box-shadow: 0 6px 15px rgba(34, 197, 94, 0.7);
 }
@@ -73,7 +75,8 @@ body.light .sidebar button {
 
 body.light .sidebar button.active,
 body.light .sidebar button:hover {
-    background-color: #4ade80; /* green-400 */
+    background-color: #4ade80;
+    /* green-400 */
     color: #1f2937;
     box-shadow: 0 6px 15px rgba(74, 222, 128, 0.7);
 }
@@ -192,7 +195,8 @@ body.light .action-buttons button:hover {
 .calculator-screen {
     width: 100%;
     padding: 1.25rem;
-    background-color: #2563eb; /* Tailwind blue-600 */
+    background-color: #2563eb;
+    /* Tailwind blue-600 */
     border: none;
     border-radius: 1rem;
     font-size: 1.5rem;
@@ -286,14 +290,18 @@ body.light .calculator-keys .key[data-action="equals"]:hover {
     width: 100%;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
     overflow: auto;
-    position: relative;
-    z-index: auto;
+    position: absolute;
+    right: 350px;
+    top: 100px;
+    z-index: 10;
+
 }
 
 .graphical-buttons button {
     display: block;
     width: 100%;
-    margin-bottom: 10px; /* Add gap between buttons */
+    margin-bottom: 10px;
+    /* Add gap between buttons */
     padding: 10px;
     border-radius: 8px;
     background-color: #3a3f51;
@@ -309,7 +317,9 @@ body.light .calculator-keys .key[data-action="equals"]:hover {
 }
 
 
-#latex-output, #derivativeOutput, #functionDisplay {
+#latex-output,
+#derivativeOutput,
+#functionDisplay {
     background-color: #334155;
     color: #e0e0e0;
     padding: 1rem;
@@ -325,7 +335,8 @@ body.light .calculator-keys .key[data-action="equals"]:hover {
     display: block;
 }
 
-body.light #latex-output, body.light #derivativeOutput {
+body.light #latex-output,
+body.light #derivativeOutput {
     background-color: #e0e7ff;
     color: #1f2937;
 }
@@ -457,7 +468,8 @@ body.light .modal-content select {
 .modal-content button[id*="Solve"],
 .modal-content button[id*="Convert"],
 .modal-content button[id*="Btn"] {
-    background-color: #22c55e !important; /* Green */
+    background-color: #22c55e !important;
+    /* Green */
     color: #ffffff !important;
 }
 
@@ -470,19 +482,22 @@ body.light .modal-content select {
 .modal-content button[id*="Solve"]:hover,
 .modal-content button[id*="Convert"]:hover,
 .modal-content button[id*="Btn"]:hover {
-    background-color: #16a34a !important; /* Darker green */
+    background-color: #16a34a !important;
+    /* Darker green */
 }
 
 /* Close buttons */
 .modal-content button[id*="close"],
 .modal-content button[id*="Close"] {
-    background-color: #ef4444; /* Red */
+    background-color: #ef4444;
+    /* Red */
     color: #ffffff;
 }
 
 .modal-content button[id*="close"]:hover,
 .modal-content button[id*="Close"]:hover {
-    background-color: #dc2626; /* Darker red */
+    background-color: #dc2626;
+    /* Darker red */
 }
 
 /* Light mode styles */
@@ -495,7 +510,8 @@ body.light .modal-content button[id*="Calculate"],
 body.light .modal-content button[id*="Solve"],
 body.light .modal-content button[id*="Convert"],
 body.light .modal-content button[id*="Btn"] {
-    background-color: #4ade80 !important; /* Light green */
+    background-color: #4ade80 !important;
+    /* Light green */
     color: #1f2937 !important;
 }
 
@@ -508,18 +524,21 @@ body.light .modal-content button[id*="Calculate"]:hover,
 body.light .modal-content button[id*="Solve"]:hover,
 body.light .modal-content button[id*="Convert"]:hover,
 body.light .modal-content button[id*="Btn"]:hover {
-    background-color: #22c55e !important; /* Darker green */
+    background-color: #22c55e !important;
+    /* Darker green */
 }
 
 body.light .modal-content button[id*="close"],
 body.light .modal-content button[id*="Close"] {
-    background-color: #f87171; /* Light red */
+    background-color: #f87171;
+    /* Light red */
     color: #1f2937;
 }
 
 body.light .modal-content button[id*="close"]:hover,
 body.light .modal-content button[id*="Close"]:hover {
-    background-color: #ef4444; /* Darker red */
+    background-color: #ef4444;
+    /* Darker red */
 }
 
 .right-panel {
@@ -564,7 +583,8 @@ body.light .modal-content button[id*="Close"]:hover {
 
     .sidebar {
         width: 100%;
-        flex-direction: column; /* Vertical stack for better usability */
+        flex-direction: column;
+        /* Vertical stack for better usability */
         gap: 10px;
         padding: 15px;
         margin-top: 0;
@@ -579,7 +599,8 @@ body.light .modal-content button[id*="Close"]:hover {
         padding: 15px;
         font-size: 1.1rem;
         min-width: auto;
-        min-height: 50px; /* Touch-friendly */
+        min-height: 50px;
+        /* Touch-friendly */
         width: 100%;
     }
 
@@ -656,7 +677,8 @@ body.light .modal-content button[id*="Close"]:hover {
     .calculator-keys .key {
         padding: 1.2rem;
         font-size: 1.2rem;
-        min-height: 60px; /* Larger touch targets */
+        min-height: 60px;
+        /* Larger touch targets */
     }
 
     .calculator-screen {
@@ -719,7 +741,8 @@ body.light .modal-content button[id*="Close"]:hover {
     }
 
     .calculator-keys {
-        grid-template-columns: repeat(4, 1fr); /* Keep 4 columns but larger */
+        grid-template-columns: repeat(4, 1fr);
+        /* Keep 4 columns but larger */
         gap: 0.5rem;
     }
 
