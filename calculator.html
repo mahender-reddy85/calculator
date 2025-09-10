@@ -38,12 +38,14 @@
                 <button id="baseBtn">Base-N</button>
                 <button id="statsBtn">Statistics</button>
             </div>
-            <div class="graphical-buttons action-buttons hidden" style="margin-top: 80px; margin-left: 100px; width: 250px">
+    <div class="graphical-buttons action-buttons hidden" style="margin-top: 80px; margin-left: 100px; width: 250px">
                 <button id="plotBtn">Plot f(x)</button><br>
                 <button id="plotDerivativeBtn">Plot Derivative</button><br>
                 <button id="exportBtn">Export PNG</button><br>
                 <button id="pdfBtn">Export PDF</button><br>
             </div>
+
+            <canvas id="graph-canvas" height="300" class="hidden"></canvas>
 
             <div class="calculator">
                 <div class="calculator-keys basic-keys hidden">
@@ -95,7 +97,6 @@
             </div>
         </div>
         <div class="right-panel">
-            <canvas id="graph-canvas" height="300" class="hidden"></canvas>
             <div id="latex-output" class="hidden"></div>
             <div id="history-panel" class="hidden">
                 <h3>Calculation History</h3>
