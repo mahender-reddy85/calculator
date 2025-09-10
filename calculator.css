@@ -827,7 +827,7 @@ body.light .modal-content button[id*="Close"]:hover {
         flex-wrap: nowrap;
         overflow-x: auto;
         -webkit-overflow-scrolling: touch;
-        margin-top: 0;
+        margin-top: 20px;
         margin-left: 0;
         order: 1;
     }
