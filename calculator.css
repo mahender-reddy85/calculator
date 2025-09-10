@@ -690,6 +690,10 @@ body.light .modal-content button[id*="Close"]:hover {
         font-size: 1.1rem;
         min-height: 48px;
     }
+
+    #history-toggle {
+        display: none;
+    }
 }
 
 /* Small mobile screens */

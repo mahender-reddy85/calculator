@@ -476,6 +476,11 @@ window.addEventListener('DOMContentLoaded', () => {
                 basicButtons.classList.remove('hidden');
                 basicKeys.classList.remove('hidden');
                 basicToggle.classList.add('active');
+                // Show history toggle in non-graphical modes
+                const historyToggle = document.getElementById('history-toggle');
+                if (historyToggle) {
+                    historyToggle.style.display = 'block';
+                }
             } else if (mode === 'scientific') {
                 basicButtons.classList.remove('hidden');
                 basicKeys.classList.remove('hidden');
@@ -483,6 +488,11 @@ window.addEventListener('DOMContentLoaded', () => {
                 scientificKeys.classList.remove('hidden');
                 if (scientificActionButtons) scientificActionButtons.classList.remove('hidden');
                 scientificToggle.classList.add('active');
+                // Show history toggle in non-graphical modes
+                const historyToggle = document.getElementById('history-toggle');
+                if (historyToggle) {
+                    historyToggle.style.display = 'block';
+                }
             } else if (mode === 'graphical') {
                 graphicalButtons.classList.remove('hidden');
                 if (graphicalActionButtons) graphicalActionButtons.classList.remove('hidden');
@@ -490,6 +500,11 @@ window.addEventListener('DOMContentLoaded', () => {
                 if (latexOutput) latexOutput.classList.remove('hidden');
                 if (screen) screen.style.display = 'none'; // Hide screen in graphical mode
                 graphicalToggle.classList.add('active');
+                // Hide history toggle in graphical mode
+                const historyToggle = document.getElementById('history-toggle');
+                if (historyToggle) {
+                    historyToggle.style.display = 'none';
+                }
             }
         }
 
@@ -598,129 +613,134 @@ window.addEventListener('DOMContentLoaded', () => {
         ], `${expr} and ${derivExpr}`);
     }
 
-    function plotGraph(datasets, exprLatex) {
-        if (!graphCanvas) {
-            console.error("Graph canvas not found.");
-            return;
-        }
-        const ctx = graphCanvas.getContext('2d');
-        if (chartInstance) chartInstance.destroy();
+function plotGraph(datasets, exprLatex) {
+    if (!graphCanvas) {
+        console.error("Graph canvas not found.");
+        return;
+    }
+    const ctx = graphCanvas.getContext('2d');
+    if (chartInstance) chartInstance.destroy();
 
-        graphCanvas.classList.remove('hidden');
-        // Set canvas background to black to match the image
-        graphCanvas.style.backgroundColor = '#000000';
-        if (latexOutput) latexOutput.classList.remove('hidden');
-        if (latexOutput) latexOutput.style.backgroundColor = '#000000'; // Match background
+    graphCanvas.classList.remove('hidden');
+    // Set canvas background to black to match the image
+    graphCanvas.style.backgroundColor = '#000000';
+    if (latexOutput) latexOutput.classList.remove('hidden');
+    if (latexOutput) latexOutput.style.backgroundColor = '#000000'; // Match background
 
-        // Calculate min/max for dynamic Y-axis scaling across all datasets
-        let allYValues = [];
-        datasets.forEach(ds => {
-            allYValues = allYValues.concat(ds.data.map(p => p.y).filter(y => typeof y === 'number' && !isNaN(y)));
-        });
-        let minY = allYValues.length > 0 ? Math.min(...allYValues) : -10;
-        let maxY = allYValues.length > 0 ? Math.max(...allYValues) : 10;
+    // Calculate min/max for dynamic Y-axis scaling across all datasets
+    let allYValues = [];
+    datasets.forEach(ds => {
+        allYValues = allYValues.concat(ds.data.map(p => p.y).filter(y => typeof y === 'number' && !isNaN(y)));
+    });
+    let minY = allYValues.length > 0 ? Math.min(...allYValues) : -10;
+    let maxY = allYValues.length > 0 ? Math.max(...allYValues) : 10;
 
-        // Add padding to Y-axis
-        const yPadding = (maxY - minY) * 0.1; // 10% padding
-        minY -= yPadding;
-        maxY += yPadding;
+    // Add padding to Y-axis
+    const yPadding = (maxY - minY) * 0.1; // 10% padding
+    minY -= yPadding;
+    maxY += yPadding;
 
-        // Ensure a default range if data is flat or empty
-        if (minY === maxY) {
-            minY -= 1;
-            maxY += 1;
-        }
+    // Ensure a default range if data is flat or empty
+    if (minY === maxY) {
+        minY -= 1;
+        maxY += 1;
+    }
 
-        // Prepare datasets for Chart.js
-        const chartDatasets = datasets.map(ds => ({
-            label: ds.label,
-            data: ds.data, // Use {x, y} objects
-            borderColor: ds.color,
-            borderWidth: 2,
-            fill: false,
-            pointRadius: 0,
-            pointBackgroundColor: ds.color,
-            pointBorderColor: '#ffffff',
-            parsing: { xAxisKey: 'x', yAxisKey: 'y' } // Tell Chart.js to use x/y keys
-        }));
+    // Prepare datasets for Chart.js
+    const chartDatasets = datasets.map(ds => ({
+        label: ds.label,
+        data: ds.data, // Use {x, y} objects
+        borderColor: ds.color,
+        borderWidth: 2,
+        fill: false,
+        pointRadius: 0,
+        pointBackgroundColor: ds.color,
+        pointBorderColor: '#ffffff',
+        parsing: { xAxisKey: 'x', yAxisKey: 'y' } // Tell Chart.js to use x/y keys
+    }));
 
-        // Use the first dataset's x values for labels (assuming all have same x range)
-        const labels = datasets[0].data.map(p => p.x);
+    // Use the first dataset's x values for labels (assuming all have same x range)
+    const labels = datasets[0].data.map(p => p.x);
 
-        chartInstance = new Chart(ctx, {
-            type: 'line',
-            data: {
-                labels: labels,
-                datasets: chartDatasets
+    chartInstance = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: labels,
+            datasets: chartDatasets
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                x: {
+                    type: 'linear',
+                    position: 'bottom',
+                    title: { display: true, text: 'x', color: '#ffffff' }, // White text for x-axis title
+                    ticks: { color: '#ffffff' }, // White text for x-axis ticks
+                    grid: { color: 'rgba(255,255,255,0.2)' } // Lighter grid for visibility on black
+                },
+                y: {
+                    type: 'linear', // Ensure type is linear
+                    position: 'left',
+                    title: { display: true, text: 'y', color: '#ffffff' }, // White text for y-axis title
+                    ticks: { color: '#ffffff' }, // White text for y-axis ticks
+                    grid: { color: 'rgba(255,255,255,0.2)' }, // Lighter grid for visibility on black
+                    min: minY, // Set dynamic min Y
+                    max: maxY  // Set dynamic max Y
+                }
             },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                scales: {
-                    x: {
-                        type: 'linear',
-                        position: 'bottom',
-                        title: { display: true, text: 'x', color: '#ffffff' }, // White text for x-axis title
-                        ticks: { color: '#ffffff' }, // White text for x-axis ticks
-                        grid: { color: 'rgba(255,255,255,0.2)' } // Lighter grid for visibility on black
-                    },
-                    y: {
-                        type: 'linear', // Ensure type is linear
-                        position: 'left',
-                        title: { display: true, text: 'y', color: '#ffffff' }, // White text for y-axis title
-                        ticks: { color: '#ffffff' }, // White text for y-axis ticks
-                        grid: { color: 'rgba(255,255,255,0.2)' }, // Lighter grid for visibility on black
-                        min: minY, // Set dynamic min Y
-                        max: maxY  // Set dynamic max Y
+            plugins: {
+                legend: {
+                    labels: {
+                        color: '#ffffff' // White text for legend
                     }
-                },
-                plugins: {
-                    legend: {
-                        labels: {
-                            color: '#ffffff' // White text for legend
-                        }
-                    }
-                },
-                // Set chart area background to black
-                layout: {
-                    backgroundColor: '#000000'
                 }
+            },
+            // Set chart area background to black
+            layout: {
+                backgroundColor: '#000000'
             }
-        });
+        }
+    });
 
-        if (latexOutput) {
-            // Format exprLatex for LaTeX display
-            let latexContent = '';
-            if (datasets.length === 1) {
-                latexContent = `f(x) = ${exprLatex}`;
-                // Clear derivative output if any
-                const derivativeOutput = document.getElementById('derivativeOutput');
-                if (derivativeOutput) {
-                    derivativeOutput.innerHTML = '';
-                    derivativeOutput.classList.add('hidden');
-                }
-            } else {
-                // For multiple datasets, assume first is function, second is derivative
-                latexContent = `f(x) = ${exprLatex.split(' and ')[0]}`;
-                const derivativeOutput = document.getElementById('derivativeOutput');
-                if (derivativeOutput) {
-                    derivativeOutput.innerHTML = `f'(x) = ${exprLatex.split(' and ')[1]}`;
-                    derivativeOutput.classList.remove('hidden');
-                }
+    if (latexOutput) {
+        // Format exprLatex for LaTeX display
+        let latexContent = '';
+        if (datasets.length === 1) {
+            latexContent = `f(x) = ${exprLatex}`;
+            // Clear derivative output if any
+            const derivativeOutput = document.getElementById('derivativeOutput');
+            if (derivativeOutput) {
+                derivativeOutput.innerHTML = '';
+                derivativeOutput.classList.add('hidden');
             }
-            latexOutput.innerHTML = latexContent;
-            // Ensure latexOutput text color is white for visibility on black background
-            latexOutput.style.color = '#ffffff';
-            if (window.MathJax && MathJax.startup && MathJax.startup.promise) {
-                MathJax.startup.promise.then(() => {
-                    MathJax.typesetPromise([latexOutput]);
-                    if (derivativeOutput) {
-                        MathJax.typesetPromise([derivativeOutput]);
-                    }
-                }).catch(e => console.warn('MathJax typesetting failed:', e));
+        } else {
+            // For multiple datasets, assume first is function, second is derivative
+            latexContent = `f(x) = ${exprLatex.split(' and ')[0]}`;
+            const derivativeOutput = document.getElementById('derivativeOutput');
+            if (derivativeOutput) {
+                derivativeOutput.innerHTML = `f'(x) = ${exprLatex.split(' and ')[1]}`;
+                derivativeOutput.classList.remove('hidden');
             }
+        }
+        latexOutput.innerHTML = latexContent;
+        // Ensure latexOutput text color is white for visibility on black background
+        latexOutput.style.color = '#ffffff';
+        if (window.MathJax && MathJax.startup && MathJax.startup.promise) {
+            MathJax.startup.promise.then(() => {
+                MathJax.typesetPromise([latexOutput]);
+                if (derivativeOutput) {
+                    MathJax.typesetPromise([derivativeOutput]);
+                }
+            }).catch(e => console.warn('MathJax typesetting failed:', e));
         }
     }
+    // Remove history list content when plotting graph
+    const historyList = document.getElementById('history-list');
+    if (historyList) {
+        historyList.innerHTML = '';
+    }
+}
 
     if (plotBtn) {
         plotBtn.addEventListener('click', () => {
