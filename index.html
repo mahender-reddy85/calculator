@@ -14,7 +14,9 @@
 </head>
 
 <body>
-    <h1 style="position: absolute; top: 10px; left: 15px; color: #fbbf24; font-weight: 700; font-size: 3.5rem; font-family: 'Inter', sans-serif;">Advanced<br>Calculator</h1>
+    <h1
+        style="position: absolute; top: 10px; left: 15px; color: yellow; font-weight: 700; font-size: 3.5rem; font-family: 'Inter', sans-serif;">
+        Advanced<br>Calculator</h1>
     <div class="sidebar">
         <button id="basic-toggle">Basic Calculator</button>
         <button id="scientific-toggle">Scientific Calculator</button>
@@ -39,7 +41,8 @@
                 <button id="baseBtn">Base-N</button>
                 <button id="statsBtn">Statistics</button>
             </div>
-    <div class="graphical-buttons action-buttons hidden" style="margin-top: 80px; margin-left: 100px; width: 250px">
+            <div class="graphical-buttons action-buttons hidden"
+                style="margin-top: 80px; margin-left: 100px; width: 250px">
                 <button id="plotBtn">Plot f(x)</button><br>
                 <button id="plotDerivativeBtn">Plot Derivative</button><br>
                 <button id="exportBtn">Export PNG</button><br>
@@ -108,121 +111,121 @@
         </div>
     </div>
 
-        <!-- Custom Alert Modal -->
-        <div class="modal hidden" id="customAlertModal">
-            <div class="modal-content">
-                <h2>Message</h2>
-                <div id="customAlertMessage"></div>
-                <button id="closeCustomAlertModal">OK</button>
-            </div>
+    <!-- Custom Alert Modal -->
+    <div class="modal hidden" id="customAlertModal">
+        <div class="modal-content">
+            <h2>Message</h2>
+            <div id="customAlertMessage"></div>
+            <button id="closeCustomAlertModal">OK</button>
         </div>
+    </div>
 
-        <!-- Function Plot Modal -->
-        <div class="modal hidden" id="plotModal">
-            <div class="modal-content">
-                <h2>Plot Function</h2>
-                <input id="functionInput" placeholder="Enter function in terms of x (e.g., sin(x) + x^2)"
-                    aria-label="Enter function to plot" />
-                <button id="plotFunctionBtn">Plot f(x)</button>
-                <button id="plotFunctionAndDerivativeBtn">Plot f(x) and f'(x)</button>
-                <button id="closePlotModal">Close</button>
-                <div id="functionDisplay" class="hidden"></div>
-                <div id="derivativeOutput" class="hidden"></div>
-            </div>
+    <!-- Function Plot Modal -->
+    <div class="modal hidden" id="plotModal">
+        <div class="modal-content">
+            <h2>Plot Function</h2>
+            <input id="functionInput" placeholder="Enter function in terms of x (e.g., sin(x) + x^2)"
+                aria-label="Enter function to plot" />
+            <button id="plotFunctionBtn">Plot f(x)</button>
+            <button id="plotFunctionAndDerivativeBtn">Plot f(x) and f'(x)</button>
+            <button id="closePlotModal">Close</button>
+            <div id="functionDisplay" class="hidden"></div>
+            <div id="derivativeOutput" class="hidden"></div>
         </div>
+    </div>
 
 
-        <!-- Solve Problem Modal -->
-        <div class="modal hidden" id="solveProblemModal">
-            <div class="modal-content">
-                <h2>Solve Word Problem</h2>
-                <textarea id="problem-input" placeholder="Enter your word problem here..."
-                    aria-label="Enter word problem to solve"></textarea>
-                <button id="solveProblemBtnModal">Solve Problem</button>
-                <div id="problem-result"></div>
-                <button id="closeSolveProblemModal">Close</button>
-            </div>
+    <!-- Solve Problem Modal -->
+    <div class="modal hidden" id="solveProblemModal">
+        <div class="modal-content">
+            <h2>Solve Word Problem</h2>
+            <textarea id="problem-input" placeholder="Enter your word problem here..."
+                aria-label="Enter word problem to solve"></textarea>
+            <button id="solveProblemBtnModal">Solve Problem</button>
+            <div id="problem-result"></div>
+            <button id="closeSolveProblemModal">Close</button>
         </div>
+    </div>
 
-        <div class="modal hidden" id="matrixModal">
-            <div class="modal-content">
-                <h2>Matrix & Vector</h2>
-                <label for="matrixInputA" class="text-white">Matrix A:</label>
-                <textarea id="matrixInputA" placeholder="Enter Matrix A or Vector A (e.g., [[1,2],[3,4]] or [1,2,3])"
-                    aria-label="Enter Matrix A or Vector A"></textarea>
-                <label for="matrixInputB" class="text-white">Matrix B:</label>
-                <textarea id="matrixInputB" placeholder="Enter Matrix B or Vector B (optional)"
-                    aria-label="Enter Matrix B or Vector B"></textarea>
-                <select id="matrixOperation" aria-label="Select matrix operation">
-                    <option value="add">Add</option>
-                    <option value="subtract">Subtract</option>
-                    <option value="multiply">Multiply</option>
-                    <option value="inverse">Inverse (Matrix A only)</option>
-                    <option value="transpose">Transpose (Matrix A only)</option>
-                    <option value="determinant">Determinant (Matrix A only)</option>
-                    <option value="dot">Dot Product (Vectors A & B)</option>
-                    <option value="cross">Cross Product (Vectors A & B, 3D only)</option>
-                    <option value="magnitude">Magnitude (Vector A only)</option>
-                </select>
-                <button id="matrixCalculate">Calculate</button>
-                <div id="matrixResult"></div>
-                <button id="closeMatrixModal">Close</button>
-            </div>
+    <div class="modal hidden" id="matrixModal">
+        <div class="modal-content">
+            <h2>Matrix & Vector</h2>
+            <label for="matrixInputA" class="text-white">Matrix A:</label>
+            <textarea id="matrixInputA" placeholder="Enter Matrix A or Vector A (e.g., [[1,2],[3,4]] or [1,2,3])"
+                aria-label="Enter Matrix A or Vector A"></textarea>
+            <label for="matrixInputB" class="text-white">Matrix B:</label>
+            <textarea id="matrixInputB" placeholder="Enter Matrix B or Vector B (optional)"
+                aria-label="Enter Matrix B or Vector B"></textarea>
+            <select id="matrixOperation" aria-label="Select matrix operation">
+                <option value="add">Add</option>
+                <option value="subtract">Subtract</option>
+                <option value="multiply">Multiply</option>
+                <option value="inverse">Inverse (Matrix A only)</option>
+                <option value="transpose">Transpose (Matrix A only)</option>
+                <option value="determinant">Determinant (Matrix A only)</option>
+                <option value="dot">Dot Product (Vectors A & B)</option>
+                <option value="cross">Cross Product (Vectors A & B, 3D only)</option>
+                <option value="magnitude">Magnitude (Vector A only)</option>
+            </select>
+            <button id="matrixCalculate">Calculate</button>
+            <div id="matrixResult"></div>
+            <button id="closeMatrixModal">Close</button>
         </div>
+    </div>
 
-        <!-- Equation Modal -->
-        <div class="modal hidden" id="equationModal">
-            <div class="modal-content">
-                <h2>Equation </h2>
-                <input id="equationInput" placeholder="Enter equation (e.g., 2x + 3 = 7)" aria-label="Equation" />
-                <button id="solveEquation">Solve</button>
-                <div id="equationResult"></div>
-                <button id="closeEquationModal">Close</button>
-            </div>
+    <!-- Equation Modal -->
+    <div class="modal hidden" id="equationModal">
+        <div class="modal-content">
+            <h2>Equation </h2>
+            <input id="equationInput" placeholder="Enter equation (e.g., 2x + 3 = 7)" aria-label="Equation" />
+            <button id="solveEquation">Solve</button>
+            <div id="equationResult"></div>
+            <button id="closeEquationModal">Close</button>
         </div>
+    </div>
 
-        <!-- Base Modal -->
-        <div class="modal hidden" id="baseModal">
-            <div class="modal-content">
-                <h2>Base-N Converter</h2>
-                <input id="baseInput" placeholder="Enter number" aria-label="Number" />
-                <select id="fromBase" aria-label="From base">
-                    <option value="10">Decimal</option>
-                    <option value="2">Binary</option>
-                    <option value="8">Octal</option>
-                    <option value="16">Hexadecimal</option>
-                </select>
-                <select id="toBase" aria-label="To base">
-                    <option value="10">Decimal</option>
-                    <option value="2">Binary</option>
-                    <option value="8">Octal</option>
-                    <option value="16">Hexadecimal</option>
-                </select>
-                <button id="convertBase">Convert</button>
-                <div id="baseResult"></div>
-                <button id="closeBaseModal">Close</button>
-            </div>
+    <!-- Base Modal -->
+    <div class="modal hidden" id="baseModal">
+        <div class="modal-content">
+            <h2>Base-N Converter</h2>
+            <input id="baseInput" placeholder="Enter number" aria-label="Number" />
+            <select id="fromBase" aria-label="From base">
+                <option value="10">Decimal</option>
+                <option value="2">Binary</option>
+                <option value="8">Octal</option>
+                <option value="16">Hexadecimal</option>
+            </select>
+            <select id="toBase" aria-label="To base">
+                <option value="10">Decimal</option>
+                <option value="2">Binary</option>
+                <option value="8">Octal</option>
+                <option value="16">Hexadecimal</option>
+            </select>
+            <button id="convertBase">Convert</button>
+            <div id="baseResult"></div>
+            <button id="closeBaseModal">Close</button>
         </div>
+    </div>
 
-        <div class="modal hidden" id="statsModal">
-            <div class="modal-content">
-                <h2>Statistics</h2>
-                <textarea id="statsInput" placeholder="Enter numbers separated by spaces (e.g., 1 5 2 8 3)"
-                    aria-label="Enter numbers for statistics"></textarea>
-                <button id="calculateStats">Calculate</button>
-                <div id="statsResult"></div>
-                <button id="closeStatsModal">Close</button>
-            </div>
+    <div class="modal hidden" id="statsModal">
+        <div class="modal-content">
+            <h2>Statistics</h2>
+            <textarea id="statsInput" placeholder="Enter numbers separated by spaces (e.g., 1 5 2 8 3)"
+                aria-label="Enter numbers for statistics"></textarea>
+            <button id="calculateStats">Calculate</button>
+            <div id="statsResult"></div>
+            <button id="closeStatsModal">Close</button>
         </div>
+    </div>
 
-        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/12.4.0/math.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-        <script type="text/javascript" id="MathJax-script" async
-            src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/12.4.0/math.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script type="text/javascript" id="MathJax-script" async
+        src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 
-        <link rel="stylesheet" href="calculator.css" />
-        <script src="calculator.js"></script>
+    <link rel="stylesheet" href="calculator.css" />
+    <script src="calculator.js"></script>
 
 </body>
 
