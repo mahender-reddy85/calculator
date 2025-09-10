@@ -28,22 +28,30 @@ function clearHistory() {
     } else {
         console.warn("History list element not found.");
     }
-}
 
-// Helper function for Gemini API
-async function callGeminiAPI(payload) {
-    const apiKey = "AIzaSyAdHP06CFqp1GHZFEY2nIg8GxyU3i5B-uU";
-    const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${apiKey}`;
-    const response = await fetch(apiUrl, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
-    });
-    if (!response.ok) throw new Error(`API error: ${response.status}`);
-    return await response.json();
 }
 
 window.addEventListener('DOMContentLoaded', () => {
+    function prepareExpression(expr) {
+        let expressionToEvaluate = expr;
+
+        // Replace custom symbols with math.js friendly ones
+        expressionToEvaluate = expressionToEvaluate
+            .replace(/π/g, 'pi')   // Replace pi symbol with 'pi' string for math.js
+            .replace(/√/g, 'sqrt') // Replace square root symbol with 'sqrt' function name
+            .replace(/×/g, '*')    // Replace multiplication symbol
+            .replace(/÷/g, '/')    // Replace division symbol
+            .replace(/−/g, '-')    // Replace Unicode minus with standard hyphen-minus
+            .replace(/%/g, 'mod') // Replace % for modulus with 'mod' for math.js
+            .replace(/(\d+)P\((\d+)\)/g, 'permutations($1,$2)') // Replace nP(k) with permutations(n,k)
+            .replace(/(\d+)C\((\d+)\)/g, 'combinations($1,$2)') // Replace nC(k) with combinations(n,k)
+            .replace(/P\(/g, 'permutations(') // Replace P( with permutations(
+            .replace(/nCr\(/g, 'combinations(') // Replace nCr( with combinations(
+            .replace(/C\(/g, 'combinations('); // Replace C( with combinations(
+
+        return expressionToEvaluate;
+    }
+
     // --- CORE CALCULATOR ELEMENTS ---
     const screen = safeGetElement('calculator-screen');
     // Removed readOnly to allow blinking caret when focused
@@ -212,46 +220,10 @@ window.addEventListener('DOMContentLoaded', () => {
         console.warn("Solve Problem Modal button not found.");
     }
 
-    // --- EXPRESSION PREPARATION ---
-    function prepareExpression(expr) {
-        let expressionToEvaluate = expr;
-
-        // Replace custom symbols with math.js friendly ones
-        expressionToEvaluate = expressionToEvaluate
-            .replace(/π/g, 'pi')   // Replace pi symbol with 'pi' string for math.js
-            .replace(/√/g, 'sqrt') // Replace square root symbol with 'sqrt' function name
-            .replace(/×/g, '*')    // Replace multiplication symbol
-            .replace(/÷/g, '/')    // Replace division symbol
-            .replace(/−/g, '-')    // Replace Unicode minus with standard hyphen-minus
-            .replace(/%/g, 'mod') // Replace % for modulus with 'mod' for math.js
-            .replace(/(\d+)P\((\d+)\)/g, 'permutations($1,$2)') // Replace nP(k) with permutations(n,k)
-            .replace(/(\d+)C\((\d+)\)/g, 'combinations($1,$2)') // Replace nC(k) with combinations(n,k)
-            .replace(/P\(/g, 'permutations(') // Replace P( with permutations(
-            .replace(/nCr\(/g, 'combinations(') // Replace nCr( with combinations(
-            .replace(/C\(/g, 'combinations('); // Replace C( with combinations(
-
-        return expressionToEvaluate;
-    }
-
     // --- MAIN CALCULATOR EXPRESSION EVALUATION ---
     function calculateExpression(expr) {
         try {
-            let expressionToEvaluate = expr;
-
-            // Replace custom symbols with math.js friendly ones
-            expressionToEvaluate = expressionToEvaluate
-                .replace(/π/g, 'pi')   // Replace pi symbol with 'pi' string for math.js
-                .replace(/√/g, 'sqrt') // Replace square root symbol with 'sqrt' function name
-                .replace(/×/g, '*')    // Replace multiplication symbol
-                .replace(/÷/g, '/')    // Replace division symbol
-                .replace(/−/g, '-')    // Replace Unicode minus with standard hyphen-minus
-                //.replace(/\^/g, '**')  // Replace caret for power with double asterisk (commented out to keep caret)
-                .replace(/%/g, 'mod') // Replace % for modulus with 'mod' for math.js
-                .replace(/(\d+)P\((\d+)\)/g, 'permutations($1,$2)') // Replace nP(k) with permutations(n,k)
-                .replace(/(\d+)C\((\d+)\)/g, 'combinations($1,$2)') // Replace nC(k) with combinations(n,k)
-                .replace(/P\(/g, 'permutations(') // Replace P( with permutations(
-                .replace(/nCr\(/g, 'combinations(') // Replace nCr( with combinations(
-                .replace(/C\(/g, 'combinations('); // Replace C( with combinations(
+            let expressionToEvaluate = prepareExpression(expr);
 
             console.log("Expression sent to math.evaluate:", expressionToEvaluate);
 
@@ -519,7 +491,12 @@ window.addEventListener('DOMContentLoaded', () => {
         }
 
         scientificToggle.addEventListener('click', () => toggleMode('scientific'));
-        graphicalToggle.addEventListener('click', () => toggleMode('graphical'));
+        graphicalToggle.addEventListener('click', () => {
+            if (window.innerWidth < 768) {
+                showCustomAlert('Use Graphical Calculator in desktop for better view and export.');
+            }
+            toggleMode('graphical');
+        });
         basicToggle.addEventListener('click', () => toggleMode('basic'));
 
         // Default to basic mode
