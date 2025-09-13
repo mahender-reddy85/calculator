@@ -308,15 +308,15 @@ window.addEventListener('DOMContentLoaded', () => {
             case 'decimal':
                 if (!currentInput.includes('.')) appendInput('.');
                 break;
-        case 'equals':
-            const result = calculateExpression(currentInput);
-            if (result !== 'Error') {
-                addToHistory(currentInput, result);
-                currentInput = String(result);
-            }
-            updateScreen(result);
-            lastWasEquals = true;
-            break;
+            case 'equals':
+                const result = calculateExpression(currentInput);
+                if (result !== 'Error') {
+                    addToHistory(currentInput, result);
+                    currentInput = String(result);
+                }
+                updateScreen(result);
+                lastWasEquals = true;
+                break;
             case 'sqrt':
                 appendInput('√('); // Appends the symbol, which calculateExpression will convert
                 break;
@@ -423,70 +423,54 @@ window.addEventListener('DOMContentLoaded', () => {
     // --- SIDEBAR TOGGLES ---
     // Variables already declared above
 
-    if (scientificToggle && graphicalToggle && scientificButtons && graphicalButtons && basicToggle && basicButtons) {
-        const basicKeys = document.querySelector('.basic-keys');
-        const scientificKeys = document.querySelector('.scientific-keys');
-        const scientificActionButtons = document.querySelector('.scientific-buttons');
-        const graphicalActionButtons = document.querySelector('.graphical-buttons');
-
+    if (scientificToggle && graphicalToggle && scientificButtons && basicToggle && basicButtons) {
         function toggleMode(mode) {
-            // Hide all
-            basicButtons.classList.add('hidden');
-            scientificButtons.classList.add('hidden');
-            graphicalButtons.classList.add('hidden');
-            basicKeys.classList.add('hidden');
-            scientificKeys.classList.add('hidden');
-            if (scientificActionButtons) scientificActionButtons.classList.add('hidden');
-            if (graphicalActionButtons) graphicalActionButtons.classList.add('hidden');
+            // --- NEW CODE START ---
+            // Get references to the new main view containers
+            const calculatorView = document.getElementById('calculator-view');
+            const graphicalView = document.getElementById('graphical-view');
+
+            // First, hide all main views
+            calculatorView.classList.remove('active');
+            if (graphicalView) graphicalView.classList.remove('active');
+            // --- NEW CODE END ---
+
+            // Original code for hiding components (still needed)
+            const scientificKeys = document.querySelector('.scientific-keys');
             const graphCanvas = document.getElementById('graph-canvas');
             const latexOutput = document.getElementById('latex-output');
-            const screen = document.getElementById('calculator-screen');
-            if (graphCanvas) graphCanvas.classList.add('hidden');
-            if (latexOutput) latexOutput.classList.add('hidden');
-            if (screen) screen.style.display = 'block'; // Show screen by default
+
+            basicButtons.classList.add('hidden');
+            scientificKeys.classList.add('hidden');
+            if (scientificButtons) scientificButtons.classList.add('hidden');
+            if (graphicalButtons) graphicalButtons.classList.add('hidden'); // This line is in your original code, but my new structure doesn't need it. It's safe to keep.
+            // Remove hiding graphCanvas and latexOutput here to ensure they show in graphical mode
+            // if (graphCanvas) graphCanvas.classList.add('hidden');
+            // if (latexOutput) latexOutput.classList.add('hidden');
+
             if (mode !== 'graphical' && chartInstance) {
                 chartInstance.destroy();
                 chartInstance = null;
             }
-            // Remove active from all toggles
-            basicToggle.classList.remove('active');
-            scientificToggle.classList.remove('active');
-            graphicalToggle.classList.remove('active');
 
-            // Show specific
+            // Remove active class from all nav buttons
+            document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
+
+            // Show the correct view and components
             if (mode === 'basic') {
+                calculatorView.classList.add('active'); // Show calculator view
                 basicButtons.classList.remove('hidden');
-                basicKeys.classList.remove('hidden');
-                basicToggle.classList.add('active');
-                // Show history toggle in non-graphical modes
-                const historyToggle = document.getElementById('history-toggle');
-                if (historyToggle) {
-                    historyToggle.style.display = 'block';
-                }
+                document.getElementById('basic-toggle').classList.add('active');
             } else if (mode === 'scientific') {
+                calculatorView.classList.add('active'); // Show calculator view
                 basicButtons.classList.remove('hidden');
-                basicKeys.classList.remove('hidden');
-                scientificButtons.classList.remove('hidden');
                 scientificKeys.classList.remove('hidden');
-                if (scientificActionButtons) scientificActionButtons.classList.remove('hidden');
-                scientificToggle.classList.add('active');
-                // Show history toggle in non-graphical modes
-                const historyToggle = document.getElementById('history-toggle');
-                if (historyToggle) {
-                    historyToggle.style.display = 'block';
-                }
+                if (scientificButtons) scientificButtons.classList.remove('hidden');
+                document.getElementById('scientific-toggle').classList.add('active');
             } else if (mode === 'graphical') {
-                graphicalButtons.classList.remove('hidden');
-                if (graphicalActionButtons) graphicalActionButtons.classList.remove('hidden');
-                if (graphCanvas) graphCanvas.classList.remove('hidden');
-                if (latexOutput) latexOutput.classList.remove('hidden');
-                if (screen) screen.style.display = 'none'; // Hide screen in graphical mode
-                graphicalToggle.classList.add('active');
-                // Hide history toggle in graphical mode
-                const historyToggle = document.getElementById('history-toggle');
-                if (historyToggle) {
-                    historyToggle.style.display = 'none';
-                }
+                if (graphicalView) graphicalView.classList.add('active'); // Show graphical view
+                if (graphCanvas) graphCanvas.classList.remove('hidden'); // This is already handled by the view, but let's keep for safety
+                document.getElementById('graphical-toggle').classList.add('active');
             }
         }
 
@@ -600,134 +584,134 @@ window.addEventListener('DOMContentLoaded', () => {
         ], `${expr} and ${derivExpr}`);
     }
 
-function plotGraph(datasets, exprLatex) {
-    if (!graphCanvas) {
-        console.error("Graph canvas not found.");
-        return;
-    }
-    const ctx = graphCanvas.getContext('2d');
-    if (chartInstance) chartInstance.destroy();
+    function plotGraph(datasets, exprLatex) {
+        if (!graphCanvas) {
+            console.error("Graph canvas not found.");
+            return;
+        }
+        const ctx = graphCanvas.getContext('2d');
+        if (chartInstance) chartInstance.destroy();
 
-    graphCanvas.classList.remove('hidden');
-    // Set canvas background to black to match the image
-    graphCanvas.style.backgroundColor = '#000000';
-    if (latexOutput) latexOutput.classList.remove('hidden');
-    if (latexOutput) latexOutput.style.backgroundColor = '#000000'; // Match background
+        graphCanvas.classList.remove('hidden');
+        // Set canvas background to black to match the image
+        graphCanvas.style.backgroundColor = '#000000';
+        if (latexOutput) latexOutput.classList.remove('hidden');
+        if (latexOutput) latexOutput.style.backgroundColor = '#000000'; // Match background
 
-    // Calculate min/max for dynamic Y-axis scaling across all datasets
-    let allYValues = [];
-    datasets.forEach(ds => {
-        allYValues = allYValues.concat(ds.data.map(p => p.y).filter(y => typeof y === 'number' && !isNaN(y)));
-    });
-    let minY = allYValues.length > 0 ? Math.min(...allYValues) : -10;
-    let maxY = allYValues.length > 0 ? Math.max(...allYValues) : 10;
+        // Calculate min/max for dynamic Y-axis scaling across all datasets
+        let allYValues = [];
+        datasets.forEach(ds => {
+            allYValues = allYValues.concat(ds.data.map(p => p.y).filter(y => typeof y === 'number' && !isNaN(y)));
+        });
+        let minY = allYValues.length > 0 ? Math.min(...allYValues) : -10;
+        let maxY = allYValues.length > 0 ? Math.max(...allYValues) : 10;
 
-    // Add padding to Y-axis
-    const yPadding = (maxY - minY) * 0.1; // 10% padding
-    minY -= yPadding;
-    maxY += yPadding;
+        // Add padding to Y-axis
+        const yPadding = (maxY - minY) * 0.1; // 10% padding
+        minY -= yPadding;
+        maxY += yPadding;
 
-    // Ensure a default range if data is flat or empty
-    if (minY === maxY) {
-        minY -= 1;
-        maxY += 1;
-    }
+        // Ensure a default range if data is flat or empty
+        if (minY === maxY) {
+            minY -= 1;
+            maxY += 1;
+        }
 
-    // Prepare datasets for Chart.js
-    const chartDatasets = datasets.map(ds => ({
-        label: ds.label,
-        data: ds.data, // Use {x, y} objects
-        borderColor: ds.color,
-        borderWidth: 2,
-        fill: false,
-        pointRadius: 0,
-        pointBackgroundColor: ds.color,
-        pointBorderColor: '#ffffff',
-        parsing: { xAxisKey: 'x', yAxisKey: 'y' } // Tell Chart.js to use x/y keys
-    }));
+        // Prepare datasets for Chart.js
+        const chartDatasets = datasets.map(ds => ({
+            label: ds.label,
+            data: ds.data, // Use {x, y} objects
+            borderColor: ds.color,
+            borderWidth: 2,
+            fill: false,
+            pointRadius: 0,
+            pointBackgroundColor: ds.color,
+            pointBorderColor: '#ffffff',
+            parsing: { xAxisKey: 'x', yAxisKey: 'y' } // Tell Chart.js to use x/y keys
+        }));
 
-    // Use the first dataset's x values for labels (assuming all have same x range)
-    const labels = datasets[0].data.map(p => p.x);
+        // Use the first dataset's x values for labels (assuming all have same x range)
+        const labels = datasets[0].data.map(p => p.x);
 
-    chartInstance = new Chart(ctx, {
-        type: 'line',
-        data: {
-            labels: labels,
-            datasets: chartDatasets
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            scales: {
-                x: {
-                    type: 'linear',
-                    position: 'bottom',
-                    title: { display: true, text: 'x', color: '#ffffff' }, // White text for x-axis title
-                    ticks: { color: '#ffffff' }, // White text for x-axis ticks
-                    grid: { color: 'rgba(255,255,255,0.2)' } // Lighter grid for visibility on black
-                },
-                y: {
-                    type: 'linear', // Ensure type is linear
-                    position: 'left',
-                    title: { display: true, text: 'y', color: '#ffffff' }, // White text for y-axis title
-                    ticks: { color: '#ffffff' }, // White text for y-axis ticks
-                    grid: { color: 'rgba(255,255,255,0.2)' }, // Lighter grid for visibility on black
-                    min: minY, // Set dynamic min Y
-                    max: maxY  // Set dynamic max Y
-                }
+        chartInstance = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: labels,
+                datasets: chartDatasets
             },
-            plugins: {
-                legend: {
-                    labels: {
-                        color: '#ffffff' // White text for legend
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    x: {
+                        type: 'linear',
+                        position: 'bottom',
+                        title: { display: true, text: 'x', color: '#ffffff' }, // White text for x-axis title
+                        ticks: { color: '#ffffff' }, // White text for x-axis ticks
+                        grid: { color: 'rgba(255,255,255,0.2)' } // Lighter grid for visibility on black
+                    },
+                    y: {
+                        type: 'linear', // Ensure type is linear
+                        position: 'left',
+                        title: { display: true, text: 'y', color: '#ffffff' }, // White text for y-axis title
+                        ticks: { color: '#ffffff' }, // White text for y-axis ticks
+                        grid: { color: 'rgba(255,255,255,0.2)' }, // Lighter grid for visibility on black
+                        min: minY, // Set dynamic min Y
+                        max: maxY  // Set dynamic max Y
                     }
+                },
+                plugins: {
+                    legend: {
+                        labels: {
+                            color: '#ffffff' // White text for legend
+                        }
+                    }
+                },
+                // Set chart area background to black
+                layout: {
+                    backgroundColor: '#000000'
                 }
-            },
-            // Set chart area background to black
-            layout: {
-                backgroundColor: '#000000'
             }
-        }
-    });
+        });
 
-    if (latexOutput) {
-        // Format exprLatex for LaTeX display
-        let latexContent = '';
-        if (datasets.length === 1) {
-            latexContent = `f(x) = ${exprLatex}`;
-            // Clear derivative output if any
-            const derivativeOutput = document.getElementById('derivativeOutput');
-            if (derivativeOutput) {
-                derivativeOutput.innerHTML = '';
-                derivativeOutput.classList.add('hidden');
-            }
-        } else {
-            // For multiple datasets, assume first is function, second is derivative
-            latexContent = `f(x) = ${exprLatex.split(' and ')[0]}`;
-            const derivativeOutput = document.getElementById('derivativeOutput');
-            if (derivativeOutput) {
-                derivativeOutput.innerHTML = `f'(x) = ${exprLatex.split(' and ')[1]}`;
-                derivativeOutput.classList.remove('hidden');
-            }
-        }
-        latexOutput.innerHTML = latexContent;
-        // Ensure latexOutput text color is white for visibility on black background
-        latexOutput.style.color = '#ffffff';
-        if (window.MathJax && MathJax.startup && MathJax.startup.promise) {
-            MathJax.startup.promise.then(() => {
-                MathJax.typesetPromise([latexOutput]);
+        if (latexOutput) {
+            // Format exprLatex for LaTeX display
+            let latexContent = '';
+            if (datasets.length === 1) {
+                latexContent = `f(x) = ${exprLatex}`;
+                // Clear derivative output if any
+                const derivativeOutput = document.getElementById('derivativeOutput');
                 if (derivativeOutput) {
-                    MathJax.typesetPromise([derivativeOutput]);
+                    derivativeOutput.innerHTML = '';
+                    derivativeOutput.classList.add('hidden');
                 }
-            }).catch(e => console.warn('MathJax typesetting failed:', e));
+            } else {
+                // For multiple datasets, assume first is function, second is derivative
+                latexContent = `f(x) = ${exprLatex.split(' and ')[0]}`;
+                const derivativeOutput = document.getElementById('derivativeOutput');
+                if (derivativeOutput) {
+                    derivativeOutput.innerHTML = `f'(x) = ${exprLatex.split(' and ')[1]}`;
+                    derivativeOutput.classList.remove('hidden');
+                }
+            }
+            latexOutput.innerHTML = latexContent;
+            // Ensure latexOutput text color is white for visibility on black background
+            latexOutput.style.color = '#ffffff';
+            if (window.MathJax && MathJax.startup && MathJax.startup.promise) {
+                MathJax.startup.promise.then(() => {
+                    MathJax.typesetPromise([latexOutput]);
+                    if (derivativeOutput) {
+                        MathJax.typesetPromise([derivativeOutput]);
+                    }
+                }).catch(e => console.warn('MathJax typesetting failed:', e));
+            }
+        }
+        // Remove history list content when plotting graph
+        const historyList = document.getElementById('history-list');
+        if (historyList) {
+            historyList.innerHTML = '';
         }
     }
-    // Remove history list content when plotting graph
-    const historyList = document.getElementById('history-list');
-    if (historyList) {
-        historyList.innerHTML = '';
-    }
-}
 
     if (plotBtn) {
         plotBtn.addEventListener('click', () => {
@@ -1300,7 +1284,70 @@ function plotGraph(datasets, exprLatex) {
         document.getElementById('closeStatsModal').addEventListener('click', () => hideModal('statsModal'));
     }
 
+    // Unit Converter
+    const units = {
+        length: ['meter', 'kilometer', 'mile', 'foot', 'inch', 'centimeter', 'millimeter'],
+        mass: ['gram', 'kilogram', 'pound', 'ounce'],
+        temperature: ['celsius', 'fahrenheit', 'kelvin'],
+        time: ['second', 'minute', 'hour', 'day']
+    };
 
+    function populateUnits(category) {
+        const fromUnit = document.getElementById('fromUnit');
+        const toUnit = document.getElementById('toUnit');
+        fromUnit.innerHTML = '';
+        toUnit.innerHTML = '';
+        units[category].forEach(unit => {
+            const option1 = document.createElement('option');
+            option1.value = unit;
+            option1.textContent = unit;
+            fromUnit.appendChild(option1);
+            const option2 = document.createElement('option');
+            option2.value = unit;
+            option2.textContent = unit;
+            toUnit.appendChild(option2);
+        });
+        // Set defaults
+        fromUnit.value = units[category][0];
+        toUnit.value = units[category][1] || units[category][0];
+    }
+
+    function convertUnit() {
+        const input = parseFloat(document.getElementById('unitInput').value);
+        const from = document.getElementById('fromUnit').value;
+        const to = document.getElementById('toUnit').value;
+        const output = document.getElementById('unitOutput');
+        if (isNaN(input)) {
+            output.value = '';
+            return;
+        }
+        try {
+            const result = math.unit(input, from).toNumber(to);
+            output.value = result.toFixed(4);
+        } catch (e) {
+            output.value = 'Error';
+        }
+    }
+
+    const unitCategory = document.getElementById('unitCategory');
+    const unitInput = document.getElementById('unitInput');
+    const fromUnit = document.getElementById('fromUnit');
+    const toUnit = document.getElementById('toUnit');
+    if (unitCategory && unitInput && fromUnit && toUnit) {
+        populateUnits('length');
+        unitCategory.addEventListener('change', () => populateUnits(unitCategory.value));
+        unitInput.addEventListener('input', convertUnit);
+        fromUnit.addEventListener('change', convertUnit);
+        toUnit.addEventListener('change', convertUnit);
+    }
+
+    // Unit Converter modal
+    if (document.getElementById('unitConverterBtn')) {
+        document.getElementById('unitConverterBtn').addEventListener('click', () => showModal('unitConverterModal'));
+    }
+    if (document.getElementById('closeUnitConverterModal')) {
+        document.getElementById('closeUnitConverterModal').addEventListener('click', () => hideModal('unitConverterModal'));
+    }
 
     // Initial clear for the calculator screen
     clearAll();
